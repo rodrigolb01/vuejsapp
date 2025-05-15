@@ -1,32 +1,27 @@
 <script >
-import { ref } from 'vue';
-
 export default {
-  setup() {
-    const name = ref("John doe");
-    const status = ref("active");
-    const tasks = ref(["Task One", "Task Two", "Task Three"]);
-
-    const toggleStatus = () => {
-      if(status.value === "active")
+  data() {
+    return {
+      name: "John Doe",
+      status: "inactive",
+      tasks: ["cleaning", "coding", "cooking", "going to class"],
+      link: "https://www.aliexpress.com/"
+    };
+  },
+  methods: {
+    toggleStatus() {
+      if(this.status === "active")
     {
-      status.value = "pending";
+      this.status = "pending";
     }
-    else if(status.value === "pending")
+    else if(this.status === "pending")
     {
-      status.value = "inactive";
+      this.status = "inactive";
     }
     else
     {
-      status.value = 'active';
+      this.status = 'active';
     }
-    };
-
-    return {
-      name,
-      status,
-      tasks,
-      toggleStatus
     }
   }
 }
@@ -34,7 +29,6 @@ export default {
 
 <template>
   <h1>Hello {{name}}</h1>
-
   <p v-if="status === 'active'">User is Active</p>
   <p v-else-if="status === 'pending'">User is Pending</p>
   <p v-else>User is Inactive</p>
@@ -43,8 +37,9 @@ export default {
   <ul v-for="task in tasks" :key="task">
     <h1>{{task}}</h1>
   </ul>
+  <!-- <a v-bind:href="link">Click Me</a > -->
+   <a :href="link">Click Me!</a>
 
-  <br>
    <!-- <button v-on:click="toggleStatus">Change Status</button> -->
   <button @click="toggleStatus">Change Status</button>
 </template>
