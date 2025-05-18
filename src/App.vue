@@ -1,5 +1,5 @@
 <script setup>//using Composition API
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 //"state"
 const name = ref("John doe");
@@ -30,6 +30,17 @@ const deleteTask = (index) => {
   console.log("index:" + index)
   tasks.value.splice(index, 1);
 }
+
+onMounted(async () => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+    const data = await response.json();
+    tasks.value = data.map((task) => task.title);
+  } catch (error) {
+    console.log("Error fetching!");
+    console.log(error);
+  }
+})
 
 </script>
 //render
