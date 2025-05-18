@@ -1,37 +1,38 @@
-<script >
+<script setup>//using Composition API
 import { ref } from 'vue';
 
-export default {
-  setup() {
-    const name = ref("John doe");
-    const status = ref("active");
-    const tasks = ref(["Task One", "Task Two", "Task Three"]);
+//"state"
+const name = ref("John doe");
+const status = ref("active");
+const tasks = ref(["Task One", "Task Two", "Task Three"]);
+const newTask = ref("");
+//functions
 
-    const toggleStatus = () => {
-      if(status.value === "active")
-    {
-      status.value = "pending";
-    }
-    else if(status.value === "pending")
-    {
-      status.value = "inactive";
-    }
-    else
-    {
-      status.value = 'active';
-    }
-    };
 
-    return {
-      name,
-      status,
-      tasks,
-      toggleStatus
-    }
+const toggleStatus = () => {
+  if(status.value === "active")
+    status.value = "pending";
+  else if(status.value === "pending")
+    status.value = "inactive";
+  else
+    status.value = 'active';
+};
+
+const addTask = () => {
+  if(newTask.value.trim() !== "")
+  {
+    tasks.value.push(newTask.value);
+    newTask.value = "";
   }
 }
-</script>
 
+const deleteTask = (index) => {
+  console.log("index:" + index)
+  tasks.value.splice(index, 1);
+}
+
+</script>
+//render
 <template>
   <h1>Hello {{name}}</h1>
 
@@ -39,13 +40,23 @@ export default {
   <p v-else-if="status === 'pending'">User is Pending</p>
   <p v-else>User is Inactive</p>
 
-  <h3>Tasks</h3>
-  <ul v-for="task in tasks" :key="task">
-    <h1>{{task}}</h1>
-  </ul>
+  <form @submit.prevent="addTask">
+    <label for="newTask">Add Task</label>
+    <input type="text" id="newTask" name="newTask" v-model="newTask">
+    <button type="submit">Submit</button>
+  </form>
 
+  <h3>Tasks</h3>
+  <ul v-for="(task, index) in tasks" :key="task">
+    <li>
+      <span>
+        {{task}}
+      </span>
+       <button @click="deleteTask(index)">X</button>
+    </li>
+  </ul>
   <br>
-   <!-- <button v-on:click="toggleStatus">Change Status</button> -->
+  <!-- <button v-on:click="toggleStatus">Change Status</button> -->
   <button @click="toggleStatus">Change Status</button>
 </template>
 

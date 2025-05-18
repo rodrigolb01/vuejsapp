@@ -1,4 +1,4 @@
-<script >
+<script > //using options API
 export default {
   data() {
     return {
